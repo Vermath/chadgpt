@@ -1,13 +1,12 @@
 import streamlit as st
 from openai import OpenAI
-import toml
-
-# Load configuration from config.toml
-with open("config.toml", "r") as f:
-    config = toml.load(f)
 
 # Initialize OpenAI client
-openai_client = OpenAI(api_key=config["openai"]["api_key"])
+try:
+    openai_client = OpenAI(api_key=st.secrets["openai"]["api_key"])
+except Exception as e:
+    st.error("Failed to initialize OpenAI client. Please make sure you've set up the OpenAI API key in your Streamlit secrets.")
+    st.stop()
 
 # OpenAI model and system message
 model = "ft:gpt-4o-mini-2024-07-18:market-research-gpt:chadgpt-test:9r93aVi0"
